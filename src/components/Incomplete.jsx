@@ -12,6 +12,7 @@ function Incomplete({item,index,btns}) {
     }
     return (
         <div className="task">
+                  <span className='incomplete__status'>Pending</span>
             {title}
             {check}
             <div className='icons'>

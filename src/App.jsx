@@ -1,24 +1,35 @@
 import './App.css';
 import { useState } from 'react';
 import Incomplete from './components/Incomplete';
-import { MdKeyboardReturn } from 'react-icons/md';
+import Complete from './components/Complete';
+
 function App() {
-  const [task, setTask] = useState({ title: '', status: 'incomplete' });
+  const [task, setTask] = useState({id:'', title: '', status: 'incomplete' });
   const [incomplete, setIncomplete] = useState([]);
   const [complete, setComplete] = useState([]);
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     setIncomplete([...incomplete, { id: Math.random(), title: task.title, status: "incomplete" }]);
     setTask({ title: '' });
   }
 
-  const handleEdit = (i) => {
-    console.log(i);
+  const handleEdit = (id) => {
+    console.log(id);
+    incomplete.filter((item)=>{
+      if(item.id === id){
+        setTask(item)
+      }
+    })
   }
 
-  const handleUpdate = (i) => {
-    console.log(i);
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    // console.log(id);
+    let temp = [...incomplete];
+    let filterArray = temp.filter((item)=> item.id !== task.id);
+    setIncomplete([...filterArray, task])
+    setTask({id:'',title:'',status:''})
   }
 
   const handleDelete = (id) => {
@@ -29,7 +40,6 @@ function App() {
 
   const handleCheckBox = (id) => {
     let temp = [...incomplete];
-
     const incompleteList = temp.filter((item) => item.id !== id)
     // const completedItem = temp.filter((item) => item.id === id)
     temp.filter((item) => {
@@ -52,42 +62,46 @@ function App() {
   return (
     <div className="app">
       <div className="todo__container">
-        <h1 className='todo__heading'>Todo App</h1>
-        <form className="input__container" onSubmit={handleSubmit}>
-          <input type="text" placeholder='add todo...' className='todo__input' value={task.title} onChange={(e) => setTask({ title: e.target.value })} />
-          <input className='search__btn' type="submit" value={"submit"} />
-        </form>
-        <div className="tasks">
+        <div className="todo__head">
+          <h1 className='todo__heading'>Todo App</h1>
+          <form className="input__container" onSubmit={task.id ? handleUpdate : handleSubmit}>
+            <input type="text" placeholder='add todo...' className='todo__input' value={task.title} onChange={(e) => setTask({id:task.id, title: e.target.value,status:task.status })} />
+            <input className='search__btn' type="submit" value={task.id? "Update":"Add"} />
+          </form>
+        </div>
+        <div className="tasks" >
           <div className="incomplete">
+            <h4>All Tasks: </h4>
             {!incomplete[0] ?
-              <p>currently no task available..</p>
+              <h6>Currently No Task Available..</h6>
               :
               incomplete.map((item, index) => (
                 <Incomplete key={item.id} item={item} btns={{ handleCheckBox, handleEdit, handleDelete, handleUpdate }} />
               ))
             }
           </div>
-          {complete[0] ?
-            <div className='complete'>
-              {
-                complete.map((item, index) => (
-                  <div className="task" key={index}>
-                    {item.title}
-                    <div className='icons'>
-                      <MdKeyboardReturn onClick={() => handleReturn(item.id)} style={{ cursor: 'pointer', color: 'orange' }} />
-                      <div className="status">{item.status}</div>
-                    </div>
-                  </div>
-                ))
-              }
-            </div>
-            :
-            null
-          }
+
+          <div className='complete'>
+            <h4>Completed Tasks: </h4>
+            {complete[0] ?
+              complete.map((item, index) => (
+                <Complete item={item} index={index} btns={{handleReturn,handleDelete}}/>
+                // <div className="task" key={index}>
+                //   <span className='complete__status'>Completed</span>
+                //   {item.title}
+                //   <div className='icons'>
+                //     <MdKeyboardReturn onClick={() => handleReturn(item.id)} style={{ cursor: 'pointer', color: 'orange', fontSize:'20px' }} />
+                //   </div>
+                // </div>
+              ))
+              :
+              <h6>No Completed Task Yet.</h6>
+            }
+          </div>
 
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 
