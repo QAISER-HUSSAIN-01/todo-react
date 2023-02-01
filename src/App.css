@@ -6,7 +6,7 @@
     align-items: center;
 }
 .todo__container{
-    width: 30rem;
+    width: 50%;
     box-shadow: 1px 1px 3px grey,-1px -1px 3px grey;
     padding: 20px;
     text-align: center;
@@ -38,13 +38,14 @@
     border-radius: 5px;
     cursor: pointer;
 }
-.tasks{
+.incomplete,.complete{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    margin-top: 50px;
+    flex: 0.5;
+    /* margin-top: 50px; */
 }
 
 .task:nth-child(odd){
@@ -54,7 +55,10 @@
 .task:nth-child(even){
     background-color: #f4f4f4;
 }
-
+.tasks{
+    display: flex;
+    justify-content: space-between;
+}
 .task{
     display: flex;
     justify-content: space-between;
@@ -70,20 +74,18 @@
     display: flex; 
     gap: 20px;
 }
-.icon__input{
-    /* visibility: hidden; */
-}
-.icon:nth-child(1){
+
+.icon:nth-child(2){
     color: blue;
     cursor: pointer;
     font-size: 20px;
 }
-.icon:nth-child(2){
+.icon:nth-child(3){
     color: green;
     cursor: pointer;
     font-size: 20px;
 }
-.icon:nth-child(3){
+.icon:nth-child(4){
     color: red;
     cursor: pointer;
     font-size: 20px;
