@@ -20,9 +20,11 @@ function App() {
   const handleUpdate = (i) => {
     console.log(i);
   }
-  
-  const handleDelete = (i) => {
-    console.log(i);
+
+  const handleDelete = (id) => {
+    let temp = [...incomplete];
+    const incompleteList = temp.filter((item) => item.id !== id)
+    setIncomplete(incompleteList);
   }
 
   const handleCheckBox = (id) => {

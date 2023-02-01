@@ -17,7 +17,7 @@ function Incomplete({item,index,btns}) {
             <div className='icons'>
                 <input type="checkbox" checked={check} onChange={handleChange} />
                 <span className='icon' onClick={() => { btns.handleEdit(id) }}><MdEdit /></span>
-                <span className='icon' onClick={() => { btns.handleUpdate(id) }}><MdUpdate /></span>
+                {/* <span className='icon' onClick={() => { btns.handleUpdate(id) }}><MdUpdate /></span> */}
                 <span className='icon' onClick={() => { btns.handleDelete(id) }}><MdDelete /></span>
             </div>
         </div>
