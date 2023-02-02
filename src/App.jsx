@@ -4,10 +4,10 @@ import Incomplete from './components/Incomplete';
 import Complete from './components/Complete';
 
 function App() {
-  const [task, setTask] = useState({id:'', title: '', status: 'incomplete' });
+  const [task, setTask] = useState({ id: '', title: '', status: 'incomplete' });
   const [incomplete, setIncomplete] = useState([]);
   const [complete, setComplete] = useState([]);
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setIncomplete([...incomplete, { id: Math.random(), title: task.title, status: "incomplete" }]);
@@ -16,8 +16,8 @@ function App() {
 
   const handleEdit = (id) => {
     console.log(id);
-    incomplete.filter((item)=>{
-      if(item.id === id){
+    incomplete.filter((item) => {
+      if (item.id === id) {
         setTask(item)
       }
     })
@@ -25,10 +25,10 @@ function App() {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    // console.log(id);
     let temp = [...incomplete];
-    let filterArray = temp.filter((item)=> item.id !== task.id);
-    setIncomplete([...filterArray, task])
+    let indexNumber = temp.findIndex((item) => item.id === task.id);
+    temp[indexNumber] = task;
+    setIncomplete([...temp]);
     setTask({id:'',title:'',status:''})
   }
 
@@ -37,11 +37,14 @@ function App() {
     const incompleteList = temp.filter((item) => item.id !== id)
     setIncomplete(incompleteList);
   }
-
+  const handleDeleteComplete = (id) => {
+    let temp = [...complete];
+    const completeList = temp.filter((item) => item.id !== id)
+    setComplete(completeList);
+  }
   const handleCheckBox = (id) => {
     let temp = [...incomplete];
     const incompleteList = temp.filter((item) => item.id !== id)
-    // const completedItem = temp.filter((item) => item.id === id)
     temp.filter((item) => {
       if (item.id === id) {
         return setComplete([...complete, { id: item.id, title: item.title, status: "Completed" }])
@@ -65,8 +68,8 @@ function App() {
         <div className="todo__head">
           <h1 className='todo__heading'>Todo App</h1>
           <form className="input__container" onSubmit={task.id ? handleUpdate : handleSubmit}>
-            <input type="text" placeholder='add todo...' className='todo__input' value={task.title} onChange={(e) => setTask({id:task.id, title: e.target.value,status:task.status })} />
-            <input className='search__btn' type="submit" value={task.id? "Update":"Add"} />
+            <input type="text" placeholder='add todo...' className='todo__input' value={task.title} onChange={(e) => setTask({ id: task.id, title: e.target.value, status: task.status })} />
+            <input className='search__btn' type="submit" value={task.id ? "Update" : "Add"} />
           </form>
         </div>
         <div className="tasks" >
@@ -85,14 +88,7 @@ function App() {
             <h4>Completed Tasks: </h4>
             {complete[0] ?
               complete.map((item, index) => (
-                <Complete item={item} index={index} btns={{handleReturn,handleDelete}}/>
-                // <div className="task" key={index}>
-                //   <span className='complete__status'>Completed</span>
-                //   {item.title}
-                //   <div className='icons'>
-                //     <MdKeyboardReturn onClick={() => handleReturn(item.id)} style={{ cursor: 'pointer', color: 'orange', fontSize:'20px' }} />
-                //   </div>
-                // </div>
+                <Complete item={item} index={index} btns={{ handleReturn, handleDeleteComplete }} />
               ))
               :
               <h6>No Completed Task Yet.</h6>

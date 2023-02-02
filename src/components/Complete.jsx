@@ -1,5 +1,5 @@
 import React from 'react'
-import { MdKeyboardReturn } from 'react-icons/md'
+import { MdDelete, MdKeyboardReturn } from 'react-icons/md'
 
 function Complete({item,index,btns}) {
     return (
@@ -8,6 +8,7 @@ function Complete({item,index,btns}) {
             {item.title}
             <div className='icons'>
                 <MdKeyboardReturn onClick={() => btns.handleReturn(item.id)} style={{ cursor: 'pointer', color: 'orange', fontSize: '20px' }} />
+                 <MdDelete onClick={() => btns.handleDeleteComplete(item.id)} style={{ cursor: 'pointer', color: 'red', fontSize: '20px' }} />
             </div>
         </div>
     )
